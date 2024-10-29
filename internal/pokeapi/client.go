@@ -21,10 +21,6 @@ func do(endpoint string, obj interface{}) error {
 		return fmt.Errorf("response failed with status code: %d", res.StatusCode)
 	}
 
-	if err != nil {
-		return err
-	}
-
 	return decoder.Decode(&obj)
 
 }

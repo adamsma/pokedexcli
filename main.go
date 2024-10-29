@@ -7,7 +7,16 @@ import (
 	"strings"
 )
 
+type config struct {
+	Next     *string
+	Previous *string
+}
+
 func main() {
+
+	var cfg config
+	ep := "https://pokeapi.co/api/v2/location?offset=0&limit=20"
+	cfg.Next = &ep
 
 	reader := bufio.NewScanner(os.Stdin)
 
@@ -21,11 +30,10 @@ func main() {
 			continue
 		}
 
-		// fmt.Printf("Command Recieved: %s\n", input)
 		cliCmd, ok := getCommands()[input]
 		if ok {
 
-			err := cliCmd.callback()
+			err := cliCmd.callback(&cfg)
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -44,7 +52,7 @@ func main() {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func() error
+	callback    func(*config) error
 }
 
 func getCommands() map[string]cliCommand {
@@ -55,6 +63,19 @@ func getCommands() map[string]cliCommand {
 			description: "Displays a help message",
 			callback:    commandHelp,
 		},
+
+		"map": {
+			name:        "map",
+			description: "Displays the names of 20 loaction areas in the Pokemon world",
+			callback:    commandMap,
+		},
+
+		"mapb": {
+			name:        "mapb",
+			description: "Displays the names of previous 20 loaction areas in the Pokemon world",
+			callback:    commandMapb,
+		},
+
 		"exit": {
 			name:        "exit",
 			description: "Exit the Pokedex",

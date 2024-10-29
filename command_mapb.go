@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/url"
 
-	"github.com/adamsma/pokedexcli/pokeapi"
+	"github.com/adamsma/pokedexcli/internal/pokeapi"
 )
 
 func commandMapb(cfg *config) error {

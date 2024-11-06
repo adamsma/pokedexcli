@@ -1,10 +1,14 @@
 package pokeapi
 
-func GetLocations(qry string) Location {
+import "github.com/adamsma/pokedexcli/internal/pokecache"
+
+func GetLocations(qry string, c *pokecache.Cache) Location {
 
 	var locations Location
 
-	do("location?"+qry, &locations)
+	path := "location?" + qry
+
+	do(path, &locations, c)
 	return locations
 
 }

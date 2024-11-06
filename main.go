@@ -5,11 +5,15 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
+
+	"github.com/adamsma/pokedexcli/internal/pokecache"
 )
 
 type config struct {
-	Next     *string
-	Previous *string
+	Next      *string
+	Previous  *string
+	pokeCache pokecache.Cache
 }
 
 func main() {
@@ -17,6 +21,8 @@ func main() {
 	var cfg config
 	ep := "https://pokeapi.co/api/v2/location?offset=0&limit=20"
 	cfg.Next = &ep
+	cacheRefresh, _ := time.ParseDuration("10s")
+	cfg.pokeCache = pokecache.NewCache(cacheRefresh)
 
 	reader := bufio.NewScanner(os.Stdin)
 

@@ -18,7 +18,7 @@ func commandMapb(cfg *config) error {
 		return err
 	}
 
-	locations := pokeapi.GetLocations(u.RawQuery)
+	locations := pokeapi.GetLocations(u.RawQuery, &cfg.pokeCache)
 
 	for _, loc := range locations.Results {
 		fmt.Println(loc.Name)

@@ -7,7 +7,7 @@ import (
 	"github.com/adamsma/pokedexcli/internal/pokeapi"
 )
 
-func commandMapb(cfg *config) error {
+func commandMapb(cfg *config, params []string) error {
 
 	if cfg.Previous == nil {
 		return fmt.Errorf("<<Start of Locations>>")

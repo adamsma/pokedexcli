@@ -7,7 +7,7 @@ import (
 	"github.com/adamsma/pokedexcli/internal/pokeapi"
 )
 
-func commandMap(cfg *config) error {
+func commandMap(cfg *config, params []string) error {
 
 	if cfg.Next == nil {
 		return fmt.Errorf("<<End of Locations>>")

@@ -31,15 +31,17 @@ func main() {
 		reader.Scan()
 
 		input := strings.ToLower(reader.Text())
-		input = strings.Fields(input)[0]
-		if len(input) == 0 {
+		cmd := strings.Fields(input)[0]
+		if len(cmd) == 0 {
 			continue
 		}
 
-		cliCmd, ok := getCommands()[input]
+		params := strings.Fields(input)[1:]
+
+		cliCmd, ok := getCommands()[cmd]
 		if ok {
 
-			err := cliCmd.callback(&cfg)
+			err := cliCmd.callback(&cfg, params)
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -47,7 +49,7 @@ func main() {
 
 		} else {
 
-			fmt.Printf("Unknown command: %s\n", input)
+			fmt.Printf("Unknown command: %s\n", cmd)
 			continue
 
 		}
@@ -58,7 +60,7 @@ func main() {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*config) error
+	callback    func(*config, []string) error
 }
 
 func getCommands() map[string]cliCommand {
@@ -80,6 +82,12 @@ func getCommands() map[string]cliCommand {
 			name:        "mapb",
 			description: "Displays the names of previous 20 loaction areas in the Pokemon world",
 			callback:    commandMapb,
+		},
+
+		"explore": {
+			name:        "explore",
+			description: "Takes an area name as a parameter and displays list of pokemon found in the given area;",
+			callback:    commandExplore,
 		},
 
 		"exit": {

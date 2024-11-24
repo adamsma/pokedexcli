@@ -18,8 +18,7 @@ func commandCatch(cfg *config, params ...string) error {
 	pokemon, err := pokeapi.GetPokemonInfo(name, &cfg.pokeCache)
 
 	if err != nil {
-		fmt.Println("Failed to throw a pokeball or unknown pokemon")
-		return nil
+		return fmt.Errorf("failed to throw a pokeball or unknown pokemon")
 	}
 
 	fmt.Printf("Throwing a Pokeball at %s...\n", name)

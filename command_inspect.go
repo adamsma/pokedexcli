@@ -27,12 +27,12 @@ func commandInspect(cfg *config, params ...string) error {
 
 	fmt.Printf("Stats:\n")
 	for _, val := range info.Stats {
-		fmt.Printf("\t-%s: %d\n", val.Stat.Name, val.BaseStat)
+		fmt.Printf("  -%s: %d\n", val.Stat.Name, val.BaseStat)
 	}
 
 	fmt.Printf("Types:\n")
 	for _, val := range info.Types {
-		fmt.Printf("\t-%s\n", val.Type.Name)
+		fmt.Printf("  - %s\n", val.Type.Name)
 	}
 
 	return nil

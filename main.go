@@ -31,17 +31,23 @@ func main() {
 		reader.Scan()
 
 		input := strings.ToLower(reader.Text())
-		cmd := strings.Fields(input)[0]
-		if len(cmd) == 0 {
+		words := strings.Fields(input)
+
+		if len(words) == 0 {
 			continue
 		}
 
-		params := strings.Fields(input)[1:]
+		cmd := words[0]
+		params := []string{}
+
+		if len(words) > 1 {
+			params = words[1:]
+		}
 
 		cliCmd, ok := getCommands()[cmd]
 		if ok {
 
-			err := cliCmd.callback(&cfg, params)
+			err := cliCmd.callback(&cfg, params...)
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -60,7 +66,7 @@ func main() {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*config, []string) error
+	callback    func(*config, ...string) error
 }
 
 func getCommands() map[string]cliCommand {
@@ -85,7 +91,7 @@ func getCommands() map[string]cliCommand {
 		},
 
 		"explore": {
-			name:        "explore",
+			name:        "explore <location_name>",
 			description: "Takes an area name as a parameter and displays list of pokemon found in the given area;",
 			callback:    commandExplore,
 		},

@@ -6,7 +6,11 @@ import (
 	"github.com/adamsma/pokedexcli/internal/pokeapi"
 )
 
-func commandExplore(cfg *config, params []string) error {
+func commandExplore(cfg *config, params ...string) error {
+
+	if len(params) != 1 {
+		return fmt.Errorf("you must provide a location name, and only a location name")
+	}
 
 	fmt.Printf("Exploreing %s...\n", params[0])
 	foundPoke, err := pokeapi.ExploreLocation(params[0], &cfg.pokeCache)

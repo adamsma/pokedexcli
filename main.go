@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/adamsma/pokedexcli/internal/pokeapi"
 	"github.com/adamsma/pokedexcli/internal/pokecache"
 )
 
@@ -14,6 +15,7 @@ type config struct {
 	Next      *string
 	Previous  *string
 	pokeCache pokecache.Cache
+	pokedex   map[string]pokeapi.Pokemon
 }
 
 func main() {
@@ -21,8 +23,11 @@ func main() {
 	var cfg config
 	ep := "https://pokeapi.co/api/v2/location?offset=0&limit=20"
 	cfg.Next = &ep
+
 	cacheRefresh, _ := time.ParseDuration("10s")
 	cfg.pokeCache = pokecache.NewCache(cacheRefresh)
+
+	cfg.pokedex = make(map[string]pokeapi.Pokemon)
 
 	reader := bufio.NewScanner(os.Stdin)
 
@@ -92,8 +97,14 @@ func getCommands() map[string]cliCommand {
 
 		"explore": {
 			name:        "explore <location_name>",
-			description: "Takes an area name as a parameter and displays list of pokemon found in the given area;",
+			description: "Takes an area name as a parameter and displays list of pokemon found in the given area",
 			callback:    commandExplore,
+		},
+
+		"catch": {
+			name:        "catch <pokemon_name",
+			description: "Attempt to catch a pokemon based on its base experience",
+			callback:    commandCatch,
 		},
 
 		"exit": {
